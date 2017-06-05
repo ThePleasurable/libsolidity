@@ -704,7 +704,7 @@ bool ASTJsonConverter::visit(ElementaryTypeNameExpression const& _node)
 
 bool ASTJsonConverter::visit(Literal const& _node)
 {
-	string tokenString = tokenKind(_node.token());
+	string tokenString = literalTokenKind(_node.token());
 	Json::Value value{_node.value()};
 	if (!dev::validateUTF8(_node.value()))
 		value = Json::nullValue;
@@ -793,7 +793,7 @@ string ASTJsonConverter::functionCallKind(FunctionCallKind _kind)
 	}
 }
 
-string ASTJsonConverter::tokenKind(Token::Value _token)
+string ASTJsonConverter::literalTokenKind(Token::Value _token)
 {
 	switch (_token)
 	{
@@ -802,7 +802,6 @@ string ASTJsonConverter::tokenKind(Token::Value _token)
 	case dev::solidity::Token::StringLiteral:
 		return "string";
 	case dev::solidity::Token::TrueLiteral:
-		return "bool";
 	case dev::solidity::Token::FalseLiteral:
 		return "bool";
 	default:
