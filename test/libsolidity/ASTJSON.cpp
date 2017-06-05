@@ -228,6 +228,19 @@ BOOST_AUTO_TEST_CASE(function_type)
 	BOOST_CHECK_EQUAL(funType["attributes"]["visibility"], "external");
 }
 
+BOOST_AUTO_TEST_CASE(documentation)
+{
+	CompilerStack c;
+	c.addSource("a", "/**This contract is empty*/ contract C {}");
+	c.parseAndAnalyze();
+	map<string, unsigned> sourceIndices;
+	sourceIndices["a"] = 1;
+	Json::Value astJson = ASTJsonConverter(true, sourceIndices).toJson(c.ast("a"));
+	Json::Value documentation = astJson["children"][0]["attributes"]["documentation"];
+	BOOST_CHECK_EQUAL(documentation, "This contract is empty");
+}
+
+
 BOOST_AUTO_TEST_SUITE_END()
 
 }
